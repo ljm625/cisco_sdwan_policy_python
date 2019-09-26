@@ -8,7 +8,7 @@ setup(
   author = 'Jiaming Li',                   # Type in your name
   author_email = 'jiaminli@cisco.com',      # Type in your E-Mail
   url = 'https://github.com/ljm625/cisco_sdwan_policy_python',   # Provide either the link to your github or to your website
-  download_url = 'https://github.com/ljm625/cisco_sdwan_policy_python/archive/0.1.tar.gz',    # I explain this later on
+  download_url = 'https://github.com/ljm625/cisco_sdwan_policy_python/archive/v0.1.tar.gz',    # I explain this later on
   keywords = ['SDWAN', 'CiSCO', 'REST'],   # Keywords that define your package best
   install_requires=[            # I get to this in a second
           'requests',
