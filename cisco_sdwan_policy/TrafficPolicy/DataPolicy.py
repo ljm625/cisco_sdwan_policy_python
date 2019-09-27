@@ -19,6 +19,8 @@ class DataPolicy(BaseObject):
         self._sequence = sequences
         self.url = "template/policy/definition/data"
         super().__init__()
+        self.modified=False
+
 
 
 
@@ -65,7 +67,7 @@ class DataPolicy(BaseObject):
         id = json_info["definitionId"]
         description=json_info["description"]
         name = json_info["name"]
-        references = json_info["references"]
+        references = json_info.get("references")
         if json_info.get("defaultAction"):
             if type(json_info["defaultAction"])==dict:
                 defaultAction = json_info["defaultAction"]["type"]

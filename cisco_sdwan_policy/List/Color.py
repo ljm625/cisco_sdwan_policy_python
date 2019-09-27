@@ -14,6 +14,8 @@ class Color(BaseObject):
 
         self.url = "template/policy/list/color"
         super().__init__()
+        self.modified=False
+
 
     def get_entries(self):
         return self._entries
@@ -26,7 +28,7 @@ class Color(BaseObject):
     def from_json(cls,jsonfile):
         id = jsonfile["listId"]
         name = jsonfile["name"]
-        references = jsonfile["references"]
+        references = jsonfile.get("references")
         entries = [i["color"] for i in jsonfile["entries"]]
 
         return cls(name,entries,id,references)
@@ -35,7 +37,7 @@ class Color(BaseObject):
         return {
             "name":self.name,
             "description":"Desc Not Required",
-            "type":"app",
+            "type":"color",
             "entries":[
                 {"color":i} for i in self._entries]
         }

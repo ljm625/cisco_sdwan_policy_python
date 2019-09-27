@@ -13,6 +13,8 @@ class Vpn(BaseObject):
         self._entries = vpn_list
         self.url ="template/policy/list/vpn"
         super().__init__()
+        self.modified=False
+
 
     def get_entries(self):
         return self._entries
@@ -26,7 +28,7 @@ class Vpn(BaseObject):
     def from_json(cls,config):
         id = config["listId"]
         name = config["name"]
-        references = config["references"]
+        references = config.get("references")
         entries = [i["vpn"] for i in config["entries"]]
 
         return cls(name,entries,id,references)
@@ -39,7 +41,6 @@ class Vpn(BaseObject):
             "name":self.name,
             "description":"Desc Not Required",
             "type":"vpn",
-            "listId":None,
             "entries":[
                 {"vpn":i} for i in self._entries]
         }

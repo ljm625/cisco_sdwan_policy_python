@@ -17,6 +17,8 @@ class DataPrefix(BaseObject):
         self.name = name
         self.references = reference
         super().__init__()
+        self.modified=False
+
 
     def get_entries(self):
         return self._entries
@@ -38,7 +40,7 @@ class DataPrefix(BaseObject):
 
         id = config["listId"]
         name = config["name"]
-        references = config["references"]
+        references = config.get("references")
 
         return cls(name,entries,ipv6,id,references)
 

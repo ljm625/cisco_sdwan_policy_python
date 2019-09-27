@@ -1,3 +1,6 @@
+import importlib
+import json
+
 from cisco_sdwan_policy.List.Application import Application
 from cisco_sdwan_policy.List.Color import Color
 from cisco_sdwan_policy.List.DataPrefix import DataPrefix
@@ -127,6 +130,77 @@ class PolicyLoader(object):
                 res = MainPolicy.from_json(policy["policyId"], policy_info, self.topo_policies, self.traffic_policies, self.list_policies)
                 # print(res.name)
                 self.main_policies.append(res)
+
+    def save_to_json(self):
+        output ={
+            "list_policies":[i.export() for i in self.list_policies],
+            "topo_policies":[i.export() for i in self.topo_policies],
+            "traffic_policies":[i.export() for i in self.traffic_policies],
+            "main_policies":[i.export() for i in self.main_policies]
+        }
+        return json.dumps(output)
+
+    def load_from_json(self,json_file):
+        backup = json.loads(json_file)
+        # First load in temporary variables, then determine if there's any conflict.
+        list_policies = []
+        topo_policies = []
+        traffic_policies = []
+        main_policies = []
+        for i in backup["list_policies"]:
+            i["listId"] = i["id"]
+            cls= self.get_class("List",i["class"])
+            obj = cls.from_json(i)
+            list_policies.append(obj)
+
+        for i in backup["topo_policies"]:
+            i["definitionId"] = i["id"]
+            cls= self.get_class("Topology",i["class"])
+            obj = cls.from_json(i,list_policies)
+            topo_policies.append(obj)
+
+        for i in backup["traffic_policies"]:
+            i["definitionId"] = i["id"]
+            cls= self.get_class("TrafficPolicy",i["class"])
+            obj = cls.from_json(i,list_policies)
+            traffic_policies.append(obj)
+
+        for i in backup["main_policies"]:
+            obj = MainPolicy.from_json(i["id"],i,topo_policies,traffic_policies,list_policies)
+            main_policies.append(obj)
+
+        # Find duplicate from current vManage (Only checks the name.)
+        for i in list_policies:
+            if i.name not in [ j.name for j in self.list_policies]:
+                i.id=None
+                i.save()
+                self.list_policies.append(i)
+
+        for i in topo_policies:
+            if i.name not in [ j.name for j in self.topo_policies]:
+                i.id=None
+                i.save()
+                self.topo_policies.append(i)
+        for i in traffic_policies:
+            if i.name not in [ j.name for j in self.traffic_policies]:
+                i.id=None
+                i.save()
+                self.traffic_policies.append(i)
+        for i in main_policies:
+            if i.name not in [ j.name for j in self.main_policies]:
+                i.id=None
+                i.save()
+                self.main_policies.append(i)
+
+
+
+    @staticmethod
+    def get_class(module_name, class_name):
+        # load the module, will raise ImportError if module cannot be loaded
+        m = importlib.import_module("cisco_sdwan_policy.{}.{}".format(module_name, class_name))
+        # get the class, will raise AttributeError if class cannot be found
+        c = getattr(m, class_name)
+        return c
 
     @classmethod
     def init(cls,server_info=None):

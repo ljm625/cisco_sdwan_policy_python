@@ -15,12 +15,14 @@ class SlaClass(BaseObject):
         self.jitter = jitter
         self.url = "template/policy/list/sla"
         super().__init__()
+        self.modified=False
+
 
     @classmethod
     def from_json(cls,config):
         id = config["listId"]
         name = config["name"]
-        references = config["references"]
+        references = config.get("references")
         latency = config["entries"][0]["latency"]
         loss = config["entries"][0]["loss"]
         jitter = config["entries"][0]["jitter"]

@@ -14,6 +14,7 @@ class Application(BaseObject):
         self._entries = app_list
         self.url = "template/policy/list/app"
         super().__init__()
+        self.modified=False
 
     def get_entries(self):
         return self._entries
@@ -27,7 +28,7 @@ class Application(BaseObject):
 
         id = jsonfile["listId"]
         name = jsonfile["name"]
-        references = jsonfile["references"]
+        references = jsonfile.get("references")
         if len(jsonfile["entries"])>0 and jsonfile["entries"][0].get("app"):
             appFamily=False
             entries = [i["app"] for i in jsonfile["entries"]]

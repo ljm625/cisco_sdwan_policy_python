@@ -120,8 +120,9 @@ class MainPolicy(BaseObject):
                         "direction": "out",
                         "siteLists": sites
                 })
-            tmp["definitionId"]=control["policy"].get_id(),
-
+            # control["policy"].get_id()
+            tmp["definitionId"]=control["policy"].get_id()
+            assert type(tmp["definitionId"])==str
             resp["policyDefinition"]["assembly"].append(tmp)
         # Data Policy
         for data in self.data:
@@ -198,8 +199,6 @@ class MainPolicy(BaseObject):
                 "type": "vpnMembershipGroup"
             })
         return resp
-
-
 
     @classmethod
     def from_json(cls,id,json_info,topo_list,traffic_list,lists):

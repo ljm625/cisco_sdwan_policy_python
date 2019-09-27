@@ -41,6 +41,11 @@ class BaseObject(object):
             raise Exception("Error Creating: {} {}".format(result.status_code, result.content))
         return None
 
+    def export(self):
+        result = self.to_json()
+        result["class"]=type(self).__name__
+        result["id"]=self.id
+        return result
     def __del__(self):
         pass
 

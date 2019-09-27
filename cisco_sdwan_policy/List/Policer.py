@@ -15,13 +15,15 @@ class Policer(BaseObject):
         self.rate = rate
         self.url = "template/policy/list/policer"
         super().__init__()
+        self.modified=False
+
 
 
     @classmethod
     def from_json(cls,config):
         id = config["listId"]
         name = config["name"]
-        references = config["references"]
+        references = config.get("references")
         burst = config["entries"][0]["burst"]
         exceed = config["entries"][0]["exceed"]
         rate = config["entries"][0]["rate"]

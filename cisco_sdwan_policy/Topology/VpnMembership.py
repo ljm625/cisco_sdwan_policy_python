@@ -12,6 +12,8 @@ class VpnMembership(BaseObject):
         self._sites = entries
         self.url = "template/policy/definition/vpnmembershipgroup"
         super().__init__()
+        self.modified=False
+
 
 
     @staticmethod
@@ -89,7 +91,7 @@ class VpnMembership(BaseObject):
         id = json_info["definitionId"]
         description = json_info["description"]
         name = json_info["name"]
-        references = json_info["references"]
+        references = json_info.get("references")
         sites = json_info["sites"]
 
         return cls(name,description,sites,id,references)

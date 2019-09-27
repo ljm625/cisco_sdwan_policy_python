@@ -15,13 +15,13 @@ class ViptelaRest(object):
 
     @classmethod
     def init(cls,server_info=None):
-        if cls.instance:
-            return cls.instance
-        elif not server_info:
-            raise Exception("Viptela server not initialized.")
-        else:
+        if server_info:
             cls.instance = cls(server_info["hostname"],server_info["username"],server_info["password"],server_info["port"],server_info.get("tenant_id"))
             return cls.instance
+        elif cls.instance:
+            return cls.instance
+        else:
+            raise Exception("Viptela server not initialized.")
     def login(self, vmanage_ip, port, username, password):
         """Login to vmanage"""
         base_url_str = 'https://%s:%s' % (vmanage_ip,port)

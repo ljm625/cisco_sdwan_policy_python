@@ -14,6 +14,8 @@ class CustomTopo(BaseObject):
         self._sequence = senquences
         self.url = "template/policy/definition/control"
         super().__init__()
+        self.modified=False
+
 
 
 
@@ -47,7 +49,7 @@ class CustomTopo(BaseObject):
         id = config["definitionId"]
         name = config["name"]
         description = config["description"]
-        references = config["references"]
+        references = config.get("references")
         defaultAction = config["defaultAction"]["type"]
         sequence = config["sequences"]
         return cls(name,description,defaultAction,sequence,id,references)

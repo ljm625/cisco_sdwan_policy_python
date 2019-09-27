@@ -22,6 +22,8 @@ class AppRoute(BaseObject):
 
         self.url = "template/policy/definition/approute"
         super().__init__()
+        self.modified=False
+
 
 
     @staticmethod
@@ -75,7 +77,7 @@ class AppRoute(BaseObject):
 
         id = json_info["definitionId"]
         name = json_info["name"]
-        references = json_info["references"]
+        references = json_info.get("references")
         description = json_info["description"]
         if json_info.get("defaultAction"):
             if type(json_info["defaultAction"])==dict:

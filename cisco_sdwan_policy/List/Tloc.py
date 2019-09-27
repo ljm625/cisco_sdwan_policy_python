@@ -16,6 +16,8 @@ class Tloc(BaseObject):
         # TODO :
 
         super().__init__()
+        self.modified=False
+
 
     def get_entries(self):
         return self._entries
@@ -37,7 +39,7 @@ class Tloc(BaseObject):
     def from_json(cls,config):
         id = config["listId"]
         name = config["name"]
-        references = config["references"]
+        references = config.get("references")
         entries = config["entries"]
 
         return cls(name,entries,id,references)

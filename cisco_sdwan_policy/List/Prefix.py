@@ -18,6 +18,8 @@ class Prefix(BaseObject):
 
         self._entries=prefix_list
         super().__init__()
+        self.modified=False
+
 
     def get_entries(self):
         return self._entries
@@ -39,7 +41,7 @@ class Prefix(BaseObject):
 
         id = config["listId"]
         name = config["name"]
-        references = config["references"]
+        references = config.get("references")
         return cls(name,entries,ipv6,id,references)
 
     def to_json(self):

@@ -13,6 +13,8 @@ class Site(BaseObject):
         self._entries = site_list
         self.url= "template/policy/list/site"
         super().__init__()
+        self.modified=False
+
 
     def get_entries(self):
         return self._entries
@@ -25,7 +27,7 @@ class Site(BaseObject):
     def from_json(cls,config):
         id = config["listId"]
         name = config["name"]
-        references = config["references"]
+        references = config.get("references")
         entries = [i["siteId"] for i in config["entries"]]
 
         return cls(name,entries,id,references)
