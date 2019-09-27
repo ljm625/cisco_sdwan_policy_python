@@ -175,24 +175,67 @@ class PolicyLoader(object):
                 i.id=None
                 i.save()
                 self.list_policies.append(i)
-
+            else:
+                conflict = True
+                for j in self.list_policies:
+                    if i.name==j.name and i.id==j.id:
+                        conflict=False
+                        break
+                if conflict:
+                    i.name = i.name+"_1"
+                    i.id = None
+                    i.save()
+                    self.list_policies.append(i)
         for i in topo_policies:
             if i.name not in [ j.name for j in self.topo_policies]:
                 i.id=None
                 i.save()
                 self.topo_policies.append(i)
+            else:
+                conflict = True
+                for j in self.topo_policies:
+                    if i.name==j.name and i.id==j.id:
+                        conflict=False
+                        break
+                if conflict:
+                    i.name = i.name+"_1"
+                    i.id = None
+                    i.save()
+                    self.topo_policies.append(i)
+
         for i in traffic_policies:
             if i.name not in [ j.name for j in self.traffic_policies]:
                 i.id=None
                 i.save()
                 self.traffic_policies.append(i)
+            else:
+                conflict = True
+                for j in self.traffic_policies:
+                    if i.name==j.name and i.id==j.id:
+                        conflict=False
+                        break
+                if conflict:
+                    i.name = i.name+"_1"
+                    i.id = None
+                    i.save()
+                    self.traffic_policies.append(i)
+
         for i in main_policies:
             if i.name not in [ j.name for j in self.main_policies]:
                 i.id=None
                 i.save()
                 self.main_policies.append(i)
-
-
+            else:
+                conflict = True
+                for j in self.main_policies:
+                    if i.name==j.name and i.id==j.id:
+                        conflict=False
+                        break
+                if conflict:
+                    i.name = i.name+"_1"
+                    i.id = None
+                    i.save()
+                    self.main_policies.append(i)
 
     @staticmethod
     def get_class(module_name, class_name):
