@@ -12,6 +12,8 @@ from cisco_sdwan_policy.List.Tloc import Tloc
 from cisco_sdwan_policy.List.Vpn import Vpn
 from cisco_sdwan_policy.MainPolicy import MainPolicy
 from cisco_sdwan_policy.Topology.CustomTopo import CustomTopo
+from cisco_sdwan_policy.Topology.HubAndSpoke import HubAndSpoke
+from cisco_sdwan_policy.Topology.Mesh import Mesh
 from cisco_sdwan_policy.Topology.VpnMembership import VpnMembership
 from cisco_sdwan_policy.TrafficPolicy.AppRoute import AppRoute
 from cisco_sdwan_policy.TrafficPolicy.DataPolicy import DataPolicy
@@ -83,6 +85,21 @@ class PolicyLoader(object):
 
     def get_topo_policies(self):
         self.topo_policies=[]
+
+        hubandspokes = self.rest.get_request("template/policy/definition/hubandspoke").json()
+        for hs in hubandspokes["data"]:
+            topo_info = self.rest.get_request(
+                "template/policy/definition/hubandspoke/{}".format(hs["definitionId"])).json()
+            res = HubAndSpoke.from_json(topo_info, self.list_policies)
+            self.topo_policies.append(res)
+
+        meshes = self.rest.get_request("template/policy/definition/mesh").json()
+        for mesh in meshes["data"]:
+            topo_info = self.rest.get_request(
+                "template/policy/definition/mesh/{}".format(mesh["definitionId"])).json()
+            res = Mesh.from_json(topo_info, self.list_policies)
+            self.topo_policies.append(res)
+
 
         custom_topos = self.rest.get_request("template/policy/definition/control").json()
         for custom_topo in custom_topos["data"]:

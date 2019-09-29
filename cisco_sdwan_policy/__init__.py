@@ -11,6 +11,8 @@ from cisco_sdwan_policy.List.SlaClass import SlaClass
 from cisco_sdwan_policy.List.Tloc import Tloc
 from cisco_sdwan_policy.List.Vpn import Vpn
 
+from cisco_sdwan_policy.Topology.HubAndSpoke import HubAndSpoke
+from cisco_sdwan_policy.Topology.Mesh import Mesh
 from cisco_sdwan_policy.Topology.CustomTopo import CustomTopo
 from cisco_sdwan_policy.Topology.VpnMembership import VpnMembership
 from cisco_sdwan_policy.TrafficPolicy.DataPolicy import DataPolicy

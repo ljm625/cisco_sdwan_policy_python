@@ -35,3 +35,4 @@ if __name__ == '__main__':
         info = file.read()
     # Load to vMange and auto merge if needed.
     pl.load_from_json(info)
+
