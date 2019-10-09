@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'cisco-sdwan-policy',         # How you named your package folder (MyLib)
   packages = ['cisco_sdwan_policy'],   # Chose the same as "name"
-  version = '0.12',      # Start with a small number and increase it with every change you make
+  version = '0.13',      # Start with a small number and increase it with every change you make
   license='MIT',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
   description = 'A module for easy add/modify policies to Cisco SD-WAN(Viptela)',   # Give a short description about your library
   author = 'Jiaming Li',                   # Type in your name

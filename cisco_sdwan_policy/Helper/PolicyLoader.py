@@ -41,47 +41,56 @@ class PolicyLoader(object):
         policers = self.rest.get_request("template/policy/list/policer").json()
         for policer in policers["data"]:
             pc = Policer.from_json(policer)
-            self.list_policies.append(pc)
+            if pc:
+                self.list_policies.append(pc)
 
         vpns = self.rest.get_request("template/policy/list/vpn").json()
         for vpn in vpns["data"]:
             v = Vpn.from_json(vpn)
-            self.list_policies.append(v)
+            if v:
+                self.list_policies.append(v)
 
         sites = self.rest.get_request("template/policy/list/site").json()
         for site in sites["data"]:
             v = Site.from_json(site)
-            self.list_policies.append(v)
+            if v:
+                self.list_policies.append(v)
 
         prefixs = self.rest.get_request("template/policy/list/ipprefixall").json()
         for prefix in prefixs["data"]:
             v = Prefix.from_json(prefix)
-            self.list_policies.append(v)
+            if v:
+                self.list_policies.append(v)
 
         prefixs = self.rest.get_request("template/policy/list/dataprefixall").json()
         for prefix in prefixs["data"]:
             v = DataPrefix.from_json(prefix)
-            self.list_policies.append(v)
+            if v:
+                self.list_policies.append(v)
 
         tlocs = self.rest.get_request("template/policy/list/tloc").json()
         for tloc in tlocs["data"]:
             v = Tloc.from_json(tloc)
-            self.list_policies.append(v)
+            if v:
+                self.list_policies.append(v)
 
         slas = self.rest.get_request("template/policy/list/sla").json()
         for sla in slas["data"]:
             v = SlaClass.from_json(sla)
-            self.list_policies.append(v)
+            if v:
+                self.list_policies.append(v)
 
         apps = self.rest.get_request("template/policy/list/app").json()
         for app in apps["data"]:
             v = Application.from_json(app)
-            self.list_policies.append(v)
+            if v:
+                self.list_policies.append(v)
 
         colors = self.rest.get_request("template/policy/list/color").json()
         for color in colors["data"]:
             v = Color.from_json(color)
-            self.list_policies.append(v)
+            if v:
+                self.list_policies.append(v)
 
     def get_topo_policies(self):
         self.topo_policies=[]

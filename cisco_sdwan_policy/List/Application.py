@@ -33,8 +33,11 @@ class Application(BaseObject):
             appFamily=False
             entries = [i["app"] for i in jsonfile["entries"]]
         else:
-            appFamily=True
-            entries = [i["appFamily"] for i in jsonfile["entries"]]
+            if not jsonfile["entries"][0].get("appFamily"):
+                return None
+            else:
+                appFamily=True
+                entries = [i["appFamily"] for i in jsonfile["entries"]]
         return cls(name,entries,appFamily,id,references)
 
     def to_json(self):
