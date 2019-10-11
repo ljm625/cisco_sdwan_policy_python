@@ -1,5 +1,5 @@
 import json
-
+import base64
 import requests
 import sys
 
@@ -10,14 +10,23 @@ class ViptelaRest(object):
         self.vmanage_ip = vmanage_ip
         self.port = port
         self.session = {}
-        self.tenant=tenant
         self.token=None
+        self.tenant=None
         self.login(self.vmanage_ip, port, username, password)
+        if tenant:
+            try:
+                base64.b64decode(tenant)
+                self.tenant=tenant
+            except:
+                result = self.set_tenant(tenant)
+                if not result:
+                    raise Exception("ERROR : Given Tenant {} not found!".format(tenant))
+
 
     @classmethod
     def init(cls,server_info=None):
         if server_info:
-            cls.instance = cls(server_info["hostname"],server_info["username"],server_info["password"],server_info["port"],server_info.get("tenant_id"))
+            cls.instance = cls(server_info["hostname"],server_info["username"],server_info["password"],server_info["port"],server_info.get("tenant"))
             return cls.instance
         elif cls.instance:
             return cls.instance
@@ -62,19 +71,35 @@ class ViptelaRest(object):
             raise BaseException("ERROR : Login Failed.")
 
 
-        self.session[vmanage_ip] = sess
+        self.session = sess
         # Get xsrf_token for 19.2 and later versions
-        response = self.session[vmanage_ip].get(base_url_str+ "/dataservice/client/token", verify=False)
+        response = self.session.get(base_url_str+ "/dataservice/client/token", verify=False)
         if response.status_code==200:
             self.token = response.text
 
+    def set_tenant(self,tenant_name):
+        resp = self.get_request("tenant")
+        data = resp.json()
+        tenant_id =None
+        if data.get("data") and len(data.get("data"))>0:
+            for tenant in data["data"]:
+                if str(tenant["name"])==str(tenant_name):
+                    tenant_id = tenant["tenantId"]
+                elif str(tenant["tenantId"])==str(tenant_name):
+                    tenant_id = tenant["tenantId"]
+        if tenant_id:
+            resp = self.post_request("tenant/{}/vsessionid".format(tenant_id),{})
+            data = resp.json()
+            if data.get("VSessionId"):
+                self.tenant=data["VSessionId"]
+                return True
 
 
     def get_request(self, mount_point):
         """GET request"""
         url = "https://%s:%s/dataservice/%s" % (self.vmanage_ip, self.port, mount_point)
         header = self.get_header()
-        response = self.session[self.vmanage_ip].get(url, verify=False,headers=header)
+        response = self.session.get(url, verify=False,headers=header)
         if response.status_code>=300:
             response.raise_for_status()
         elif response.status_code==200:
@@ -87,7 +112,7 @@ class ViptelaRest(object):
         url = "https://%s:%s/dataservice/%s" % (self.vmanage_ip,self.port, mount_point)
         headers = self.get_header()
         payload = json.dumps(payload)
-        response = self.session[self.vmanage_ip].post(url=url, data=payload, headers=headers, verify=False)
+        response = self.session.post(url=url, data=payload, headers=headers, verify=False)
         return response
 
     def put_request(self, mount_point, payload=None):
@@ -102,7 +127,7 @@ class ViptelaRest(object):
         headers = self.get_header()
         if payload:
             payload=json.dumps(payload)
-            response = self.session[self.vmanage_ip].put(url=url,data=payload,headers=headers,verify=False)
+            response = self.session.put(url=url,data=payload,headers=headers,verify=False)
         else:
-            response=self.session[self.vmanage_ip].put(url=url,headers=headers,verify=False)
+            response=self.session.put(url=url,headers=headers,verify=False)
         return response

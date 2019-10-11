@@ -1,18 +1,19 @@
-# Cisco SD-WAN(Viptela) Policy Module
+# Cisco SD-WAN(Viptela) Policy 模块
 
-This Module is intend to make generating/modifying Cisco SD-WAN Policy easier as well as backing up policy. 
+该模块将Cisco SD-WAN当中的Policy部分通过Python的类进行了建模，简化了程序化创建Policy，修改Policy，备份Policy，迁移Policy的工作量。
 
-Currently tested on 19.1.x and 19.2.x vManage.
-
-[中文文档](https://github.com/ljm625/cisco_sdwan_policy_python/blob/master/README_CHINESE.md)
+[English](https://github.com/ljm625/cisco_sdwan_policy_python/blob/master/README.md)
 
 
-## Usage
 
+目前只支持Python3，
+
+安装：
 ```
 pip install cisco-sdwan-policy
 ```
 
+简单的样例代码：
 ```python
 from cisco_sdwan_policy import *
 
@@ -86,7 +87,7 @@ main_policy.save()
 
 ```
 
-The Server Info Part:
+服务器信息部分:
 
 ```json
 server_info = {
@@ -97,38 +98,32 @@ server_info = {
     "tenant": "xxx"
     }
 ```
-- hostname : The IP/Domain of vManage controller
-- port : The port for vManage web portal, by default its 443/8443
-- username : The username for vManage
-- password : The password for vManage
-- tenant : Optional, if not using multi-tenant mode, just don't present in the json. It **CAN** be Tenant name, Tenant-id or VSessionId, For example: "Tenant1" or "1554923113309" or "MTU1NDkyMzExMzMwOQ=="
+- hostname : vManage控制器的域名/IP地址
+- port : vManage控制器的网页IP，默认为 443/8443
+- username : vManage用户名
+- password : vManage密码
+- tenant : 租户名称，可选，如果非多租户环境，请不要提供此项。可以设置为租户名称，Tenant-id 或者 VSessionId, 如: "Tenant1" 或 "1554923113309" 或 "MTU1NDkyMzExMzMwOQ=="
 
-When re-initiating ViptelaRest class, all the existing object will auto change to new server as well, so **make sure to reload the policy after changing server info**
+当重新初始化ViptelaRest类，PolicyLoader对象时，已经创建的policy对象会自动被导向到新的服务器信息，这可能会导致严重的问题，因此再重新初始化之后，请务必使用PolicyLoader的load功能重新载入Policy。
 
+#### 例子 1 : 备份 & 恢复Policy
 
-#### Example 1 : Policy Backup & Restore
-
-Below is the example of backing up policy into a json file, then transfer policy to a new vManage or restore to existing vManage. You can also tranfer policies between tenants.
-
+下面的例子是Policy的全量备份，保存到Json文件中，再通过加载备份的文件将Policy恢复到新的vManage中。
 
 [Link](https://github.com/ljm625/cisco_sdwan_policy_python/blob/master/example1.py)
 
 
-#### Example 2 : Transfer a Main policy from Tenant1 to Tenant2
+#### 例子2 2 : 将租户1中的一个主Policy迁移到租户2中
 
-Below is the example of transfering a main policy from tenant 1 to tenant 2, and all the policy dependencies will automatically be transferred as well.
+下面的例子是将一个主Policy从租户1迁移到租户2中，由于本代码中实现了依赖的自动检测&保存，因此主Policy中的所有依赖也会全部被迁移过来，无需人工干预
 
 [Link](https://github.com/ljm625/cisco_sdwan_policy_python/blob/master/example2.py)
 
 
-More examples will be added later.
+之后会更新更多的样例代码.
 
+## 问题和联系方式
 
-## Questions and Contact Info
+如果您有任何问题，可以提交Github Issue 或者直接联系我。
 
-If you have any issues or a pull request, you can submit a Issue or contact me directly。
-
-My Cisco CEC ID is: jiaminli
-
-Pull request of enhancements and examples are welcomed!
-
+我的CEC ID: jiaminli

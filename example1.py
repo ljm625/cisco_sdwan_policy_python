@@ -6,10 +6,10 @@ if __name__ == '__main__':
 
     # Input server Info here
     server_info = {
-        "hostname": "198.18.1.10",
-        "port": 8443,
+        "hostname": "192.168.100.32",
+        "port": 443,
         "username": "admin",
-        "password": "admin"
+        "password": "admin",
     }
     # Load all policy in vManage
     pl = PolicyLoader.init(server_info)
