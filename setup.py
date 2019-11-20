@@ -1,14 +1,14 @@
 from distutils.core import setup
 setup(
   name = 'cisco-sdwan-policy',         # How you named your package folder (MyLib)
-  packages = ['cisco_sdwan_policy'],   # Chose the same as "name"
-  version = '0.3',      # Start with a small number and increase it with every change you make
+  packages = ['cisco_sdwan_policy','cisco_sdwan_policy.Helper','cisco_sdwan_policy.List','cisco_sdwan_policy.LocalPolicy','cisco_sdwan_policy.Topology','cisco_sdwan_policy.TrafficPolicy'],   # Chose the same as "name"
+  version = '0.31',      # Start with a small number and increase it with every change you make
   license='MIT',        # Chose a license from here: https://help.github.com/articles/licensing-a-repository
   description = 'A module for easy add/modify policies to Cisco SD-WAN(Viptela)',   # Give a short description about your library
   author = 'Jiaming Li',                   # Type in your name
   author_email = 'jiaminli@cisco.com',      # Type in your E-Mail
   url = 'https://github.com/ljm625/cisco_sdwan_policy_python',   # Provide either the link to your github or to your website
-  download_url = 'https://github.com/ljm625/cisco_sdwan_policy_python/archive/v0.3.tar.gz',    # I explain this later on
+  download_url = 'https://github.com/ljm625/cisco_sdwan_policy_python/archive/v0.31.tar.gz',    # I explain this later on
   keywords = ['SDWAN', 'CiSCO', 'REST'],   # Keywords that define your package best
   install_requires=[            # I get to this in a second
           'requests',
