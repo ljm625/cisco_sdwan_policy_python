@@ -64,13 +64,13 @@ if __name__ == '__main__':
                 i.name = i.name + "_1"
             i.id = None
         for i in old_traffic:
-            if i.name not in [j.name for j in pl.topo_policies]:
+            if i.name not in [j.name for j in pl.traffic_policies]:
                 pass
             else:
                 i.name = i.name + "_1"
             i.id = None
         if policy_to_move.name in [j.name for j in pl.main_policies]:
-            policy_to_move.name = policy_to_move+"_1"
+            policy_to_move.name = policy_to_move.name+"_1"
 
         # Save the new policy, all the dependencies will automatically created.
         policy_to_move.save()

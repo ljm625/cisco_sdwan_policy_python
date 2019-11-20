@@ -166,7 +166,7 @@ class PolicyLoader(object):
         }
         return json.dumps(output)
 
-    def load_from_json(self,json_file):
+    def load_from_json(self,json_file,only_ref=False):
         backup = json.loads(json_file)
         # First load in temporary variables, then determine if there's any conflict.
         list_policies = []
@@ -195,73 +195,100 @@ class PolicyLoader(object):
             obj = MainPolicy.from_json(i["id"],i,topo_policies,traffic_policies,list_policies)
             main_policies.append(obj)
 
-        # Find duplicate from current vManage (Only checks the name.)
-        for i in list_policies:
-            if i.name not in [ j.name for j in self.list_policies]:
-                i.id=None
+        if only_ref:
+            for i in list_policies:
+                if i.name not in [j.name for j in self.list_policies]:
+                    pass
+                else:
+                    i.name = i.name + "_1"
+                i.id = None
+            for i in topo_policies:
+                if i.name not in [j.name for j in self.topo_policies]:
+                    pass
+                else:
+                    i.name = i.name + "_1"
+                i.id = None
+            for i in traffic_policies:
+                if i.name not in [j.name for j in self.traffic_policies]:
+                    pass
+                else:
+                    i.name = i.name + "_1"
+                i.id = None
+            for i in main_policies:
+                if i.name in [j.name for j in self.main_policies]:
+                    i.name = i.name + "_1"
+                i.id = None
+                # Save the new policy, all the dependencies will automatically created.
                 i.save()
-                self.list_policies.append(i)
-            else:
-                conflict = True
-                for j in self.list_policies:
-                    if i.name==j.name and i.id==j.id:
-                        conflict=False
-                        break
-                if conflict:
-                    i.name = i.name+"_1"
-                    i.id = None
+        else:
+
+            # Find duplicate from current vManage (Only checks the name.)
+            for i in list_policies:
+                if i.name not in [ j.name for j in self.list_policies]:
+                    i.id=None
                     i.save()
                     self.list_policies.append(i)
-        for i in topo_policies:
-            if i.name not in [ j.name for j in self.topo_policies]:
-                i.id=None
-                i.save()
-                self.topo_policies.append(i)
-            else:
-                conflict = True
-                for j in self.topo_policies:
-                    if i.name==j.name and i.id==j.id:
-                        conflict=False
-                        break
-                if conflict:
-                    i.name = i.name+"_1"
-                    i.id = None
+                else:
+                    conflict = True
+                    for j in self.list_policies:
+                        if i.name==j.name and i.id==j.id:
+                            conflict=False
+                            break
+                    if conflict:
+                        i.name = i.name+"_1"
+                        i.id = None
+                        i.save()
+                        self.list_policies.append(i)
+            for i in topo_policies:
+                if i.name not in [ j.name for j in self.topo_policies]:
+                    i.id=None
                     i.save()
                     self.topo_policies.append(i)
+                else:
+                    conflict = True
+                    for j in self.topo_policies:
+                        if i.name==j.name and i.id==j.id:
+                            conflict=False
+                            break
+                    if conflict:
+                        i.name = i.name+"_1"
+                        i.id = None
+                        i.save()
+                        self.topo_policies.append(i)
 
-        for i in traffic_policies:
-            if i.name not in [ j.name for j in self.traffic_policies]:
-                i.id=None
-                i.save()
-                self.traffic_policies.append(i)
-            else:
-                conflict = True
-                for j in self.traffic_policies:
-                    if i.name==j.name and i.id==j.id:
-                        conflict=False
-                        break
-                if conflict:
-                    i.name = i.name+"_1"
-                    i.id = None
+            for i in traffic_policies:
+                if i.name not in [ j.name for j in self.traffic_policies]:
+                    i.id=None
                     i.save()
                     self.traffic_policies.append(i)
+                else:
+                    conflict = True
+                    for j in self.traffic_policies:
+                        if i.name==j.name and i.id==j.id:
+                            conflict=False
+                            break
+                    if conflict:
+                        i.name = i.name+"_1"
+                        i.id = None
+                        i.save()
+                        self.traffic_policies.append(i)
 
-        for i in main_policies:
-            if i.name not in [ j.name for j in self.main_policies]:
-                i.id=None
-                i.save()
-                self.main_policies.append(i)
-            else:
-                conflict = True
-                for j in self.main_policies:
-                    if i.name==j.name and i.id==j.id:
-                        conflict=False
-                        break
-                if conflict:
-                    i.name = i.name+"_1"
-                    i.id = None
+            for i in main_policies:
+                if i.name not in [ j.name for j in self.main_policies]:
+                    i.id=None
                     i.save()
                     self.main_policies.append(i)
+                else:
+                    conflict = True
+                    for j in self.main_policies:
+                        if i.name==j.name and i.id==j.id:
+                            conflict=False
+                            break
+                    if conflict:
+                        i.name = i.name+"_1"
+                        i.id = None
+                        i.save()
+                        self.main_policies.append(i)
 
     @staticmethod
     def get_class(module_name, class_name):
