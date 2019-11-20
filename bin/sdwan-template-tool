@@ -194,13 +194,13 @@ def print_help():
     print("[*]\n[*] Example:")
     print("[*] Transfer template test:")
     print(
-        "[*] ./tools_template_backup.py --mode=transfer --template=test --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin --server2-ip=10.0.0.2 --server2-port=443 --server2-user=admin --server2-pw=admin")
+        "[*] sdwan-template-tool --mode=transfer --template=test --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin --server2-ip=10.0.0.2 --server2-port=443 --server2-user=admin --server2-pw=admin")
     print("[*] Backup all template:")
     print(
-        "[*] ./tools_template_backup.py --mode=backup --all-template --file=backup.json --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin")
+        "[*] sdwan-template-tool --mode=backup --all-template --file=backup.json --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin")
     print("[*] Restore template from a file:")
     print(
-        "[*] ./tools_template_backup.py --mode=restore --file=backup.json --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin")
+        "[*] sdwan-template-tool --mode=restore --file=backup.json --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin")
 
 
 if __name__ == '__main__':

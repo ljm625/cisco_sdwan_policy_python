@@ -112,8 +112,8 @@ def print_help():
     print("[*]\n[*] Example:")
     print("[*] Transfer policy 'Policy1':")
     print(
-        "[*] sdwan-policy-tool --mode=transfer --policy=test --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin --server2-ip=10.0.0.2 --server2-port=443 --server2-user=admin --server2-pw=admin")
-    print("[*] Backup all template:")
+        "[*] sdwan-policy-tool --mode=transfer --policy=Policy1 --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin --server2-ip=10.0.0.2 --server2-port=443 --server2-user=admin --server2-pw=admin")
+    print("[*] Backup all policy:")
     print(
         "[*] sdwan-policy-tool --mode=backup --all-policy --file=backup.json --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin")
     print("[*] Restore policy from a file:")

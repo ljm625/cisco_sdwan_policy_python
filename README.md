@@ -4,6 +4,8 @@ This Module is intend to make generating/modifying Cisco SD-WAN Policy easier as
 
 Currently tested on 19.1.x and 19.2.x vManage.
 
+Also included two cli tools for easiler backup/restore policy and template base on the project.
+
 [中文文档](https://github.com/ljm625/cisco_sdwan_policy_python/blob/master/README_CHINESE.md)
 
 
@@ -106,6 +108,45 @@ server_info = {
 When re-initiating ViptelaRest class, all the existing object will auto change to new server as well, so **make sure to reload the policy after changing server info**
 
 
+
+## CLI tools usage
+
+```
+pip install cisco-sdwan-policy
+```
+
+#### For template backup/restore, run:
+
+```bash
+sdwan-template-tool -h
+```
+
+Example usage:
+```bash
+[*] Transfer template test:
+sdwan-template-tool --mode=transfer --template=test --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin --server2-ip=10.0.0.2 --server2-port=443 --server2-user=admin --server2-pw=admin
+[*] Backup all template:
+sdwan-template-tool --mode=backup --all-template --file=backup.json --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin
+[*] Restore template from a file:
+sdwan-template-tool --mode=restore --file=backup.json --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin```
+```
+
+#### For policy backup/restore, run:
+
+```bash
+sdwan-policy-tool -h
+```
+
+Example usage:
+```bash
+[*] Transfer policy 'Policy1':
+sdwan-policy-tool --mode=transfer --policy=Policy1 --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin --server2-ip=10.0.0.2 --server2-port=443 --server2-user=admin --server2-pw=admin
+[*] Backup all policy:
+sdwan-policy-tool --mode=backup --all-policy --file=backup.json --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin
+[*] Restore policy from a file:
+sdwan-policy-tool --mode=restore --file=backup.json --server1-ip=10.0.0.1 --server1-port=443 --server1-user=admin --server1-pw=admin
+```
+
 #### Example 1 : Policy Backup & Restore
 
 Below is the example of backing up policy into a json file, then transfer policy to a new vManage or restore to existing vManage. You can also tranfer policies between tenants.
@@ -128,7 +169,7 @@ More examples will be added later.
 
 If you have any issues or a pull request, you can submit a Issue or contact me directly。
 
-My Cisco CEC ID is: jiaminli
+My Cisco CEC ID: jiaminli
 
 Pull request of enhancements and examples are welcomed!
 
