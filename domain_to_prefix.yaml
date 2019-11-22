@@ -1,0 +1,12 @@
+---
+apps:
+  Weixin:
+    - "*.weixin.com"
+    - "weixin.qq.com"
+dns_server: 223.5.5.5
+
+sdwan_server:
+  hostname: 198.18.1.10
+  port: 8443
+  username: admin
+  password: admin
