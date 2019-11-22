@@ -1,6 +1,8 @@
+#!/usr/bin/env python
+
+
 import argparse
 from pprint import pprint
-
 try:
     import yaml
     import sublist3r
@@ -12,6 +14,7 @@ except Exception as e:
     print("cd Sublist3r")
     print("python setup.py install")
     exit(1)
+
 from cisco_sdwan_policy.List.DataPrefix import DataPrefix
 
 from cisco_sdwan_policy.List.Prefix import Prefix
@@ -84,7 +87,7 @@ if __name__ == '__main__':
         assert type(config["apps"])==dict
         assert type(config["dns_server"])==str
     except Exception as e:
-        print("ERROR : Invalid config file.")
+        print("ERROR : Invalid config file. Example config file:https://github.com/ljm625/cisco_sdwan_policy_python/blob/master/domain_to_prefix.yaml")
         print(e)
         exit(1)
 

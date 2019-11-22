@@ -162,6 +162,16 @@ Below is the example of transfering a main policy from tenant 1 to tenant 2, and
 [Link](https://github.com/ljm625/cisco_sdwan_policy_python/blob/master/example2.py)
 
 
+#### Example 3 : Generate a IP list base on domains
+
+Below is the example of generate a IP list base on given domains, useful for not supported applications.
+
+Before using this, please install sublist3r manually, it's not supported yet.
+
+[Link](https://github.com/ljm625/cisco_sdwan_policy_python/blob/master/domain_to_prefix.py)
+
+
+
 More examples will be added later.
 
 
