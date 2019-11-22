@@ -8,15 +8,19 @@ class DataPrefix(BaseObject):
     def __init__(self,name,prefix_list,is_ipv6=False,id=None,reference=None):
         self.type = "dataprefixList"
         self.ipv6=is_ipv6
-        if self.ipv6:
-            self.url = "template/policy/list/dataipv6prefix"
-        else:
-            self.url = "template/policy/list/dataprefix"
+
         self._entries=prefix_list
         self.id = id
         self.name = name
         self.references = reference
         super().__init__()
+        if int(self.rest.version.split(".")[0])<19:
+            self.ipv6=False
+        if self.ipv6:
+            self.url = "template/policy/list/dataipv6prefix"
+        else:
+            self.url = "template/policy/list/dataprefix"
+
         self.modified=False
 
 

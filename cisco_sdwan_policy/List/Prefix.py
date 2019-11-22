@@ -11,13 +11,17 @@ class Prefix(BaseObject):
         self.name = name
         self.references = reference
         self.ipv6=is_ipv6
+
+        self._entries=prefix_list
+        super().__init__()
+        if int(self.rest.version.split(".")[0])<19:
+            self.ipv6=False
+
         if self.ipv6:
             self.url = "template/policy/list/ipv6prefix"
         else:
             self.url = "template/policy/list/prefix"
 
-        self._entries=prefix_list
-        super().__init__()
         self.modified=False
 
 

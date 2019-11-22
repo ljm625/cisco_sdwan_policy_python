@@ -13,6 +13,7 @@ class ViptelaRest(object):
         self.token=None
         self.tenant=None
         self.login(self.vmanage_ip, port, username, password)
+        self.get_version()
         if tenant:
             try:
                 base64.b64decode(tenant)
@@ -131,3 +132,8 @@ class ViptelaRest(object):
         else:
             response=self.session.put(url=url,headers=headers,verify=False)
         return response
+
+    def get_version(self):
+        resp = self.get_request("device/action/install/devices/vmanage?groupId=all")
+        self.version = resp.json()["data"][0]["version"]
+        return resp.json()["data"][0]["version"]

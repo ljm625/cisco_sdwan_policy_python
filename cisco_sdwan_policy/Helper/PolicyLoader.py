@@ -56,13 +56,24 @@ class PolicyLoader(object):
             if v:
                 self.list_policies.append(v)
 
-        prefixs = self.rest.get_request("template/policy/list/ipprefixall").json()
+        if int(self.rest.version.split(".")[0])>=19:
+            prefix_url = "template/policy/list/ipprefixall"
+        else:
+            prefix_url = "template/policy/list/prefix"
+
+        prefixs = self.rest.get_request(prefix_url).json()
         for prefix in prefixs["data"]:
             v = Prefix.from_json(prefix)
             if v:
                 self.list_policies.append(v)
 
-        prefixs = self.rest.get_request("template/policy/list/dataprefixall").json()
+        if int(self.rest.version.split(".")[0])>=19:
+            data_prefix_url = "template/policy/list/dataprefixall"
+        else:
+            data_prefix_url = "template/policy/list/dataprefix"
+
+
+        prefixs = self.rest.get_request(data_prefix_url).json()
         for prefix in prefixs["data"]:
             v = DataPrefix.from_json(prefix)
             if v:
