@@ -5,7 +5,7 @@ from cisco_sdwan_policy.BaseObject import BaseObject
 
 class Tloc(BaseObject):
 
-    def __init__(self,name,tloc_list,id=None,reference=None):
+    def __init__(self,name,tloc_list,id=None,reference=None,**kwargs):
         self.type = "tlocList"
         self.id = id
         self.name = name
@@ -15,7 +15,7 @@ class Tloc(BaseObject):
 
         # TODO :
 
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
 
@@ -36,13 +36,13 @@ class Tloc(BaseObject):
         })
 
     @classmethod
-    def from_json(cls,config):
+    def from_json(cls,config,**kwargs):
         id = config["listId"]
         name = config["name"]
         references = config.get("references")
         entries = config["entries"]
 
-        return cls(name,entries,id,references)
+        return cls(name,entries,id,references,**kwargs)
 
     def to_json(self):
         # {"name": "test1", "description": "Desc Not Required", "type": "tloc",

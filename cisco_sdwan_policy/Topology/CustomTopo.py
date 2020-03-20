@@ -4,7 +4,7 @@ from cisco_sdwan_policy.Helper.Sequence import Sequence
 
 class CustomTopo(BaseObject):
 
-    def __init__(self,name,description,default_action,senquences,id=None,references=None):
+    def __init__(self,name,description,default_action,senquences,id=None,references=None,**kwargs):
         self.id = id
         self.name = name
         self.description = description
@@ -13,7 +13,7 @@ class CustomTopo(BaseObject):
         # config["defaultAction"]["type"]
         self._sequence = senquences
         self.url = "template/policy/definition/control"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
 
@@ -35,7 +35,7 @@ class CustomTopo(BaseObject):
 
         }
     @classmethod
-    def from_json(cls,config,lists):
+    def from_json(cls,config,lists,**kwargs):
         """
         Generate object from JSON.
         :return:
@@ -52,6 +52,6 @@ class CustomTopo(BaseObject):
         references = config.get("references")
         defaultAction = config["defaultAction"]["type"]
         sequence = config["sequences"]
-        return cls(name,description,defaultAction,sequence,id,references)
+        return cls(name,description,defaultAction,sequence,id,references,**kwargs)
 
         pass

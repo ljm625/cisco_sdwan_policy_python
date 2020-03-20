@@ -5,7 +5,7 @@ from cisco_sdwan_policy.BaseObject import BaseObject
 
 class Application(BaseObject):
 
-    def __init__(self,name,app_list,is_app_family,id=None,reference=None):
+    def __init__(self,name,app_list,is_app_family,id=None,reference=None,**kwargs):
         self.type = "appList"
         self.id = id
         self.name = name
@@ -13,7 +13,7 @@ class Application(BaseObject):
         self.app_family=is_app_family
         self._entries = app_list
         self.url = "template/policy/list/app"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
     def get_entries(self):
@@ -24,7 +24,7 @@ class Application(BaseObject):
         self._entries=entries
 
     @classmethod
-    def from_json(cls,jsonfile):
+    def from_json(cls,jsonfile,**kwargs):
 
         id = jsonfile["listId"]
         name = jsonfile["name"]
@@ -38,7 +38,7 @@ class Application(BaseObject):
             else:
                 appFamily=True
                 entries = [i["appFamily"] for i in jsonfile["entries"]]
-        return cls(name,entries,appFamily,id,references)
+        return cls(name,entries,appFamily,id,references,**kwargs)
 
     def to_json(self):
         return {

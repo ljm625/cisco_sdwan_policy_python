@@ -3,7 +3,7 @@ from cisco_sdwan_policy.BaseObject import BaseObject
 
 class Sequence(BaseObject):
 
-    def __init__(self,id,name,type,base_action,ip_type,match,actions):
+    def __init__(self,id,name,type,base_action,ip_type,match,actions,**kwargs):
 
         self.id = id
         self.name = name
@@ -12,7 +12,7 @@ class Sequence(BaseObject):
         self.ip_type=ip_type
         self.actions = actions
         self.match = match
-        super().__init__()
+        super().__init__(**kwargs)
 
     @staticmethod
     def get_list_obj(obj_id,lists):
@@ -22,7 +22,7 @@ class Sequence(BaseObject):
         return None
 
     @classmethod
-    def from_json(cls,config,lists):
+    def from_json(cls,config,lists,**kwargs):
         for action in config["actions"]:
             if type(action["parameter"])==list:
                 for para in action["parameter"]:
@@ -51,7 +51,7 @@ class Sequence(BaseObject):
         actions = config["actions"]
         match = config["match"]
 
-        return cls(id,name,types,baseAction,ip_type,match,actions)
+        return cls(id,name,types,baseAction,ip_type,match,actions,**kwargs)
 
     def to_json(self):
         resp = {

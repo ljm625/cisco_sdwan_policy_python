@@ -4,14 +4,14 @@ from cisco_sdwan_policy.Helper.Sequence import Sequence
 
 class VpnMembership(BaseObject):
 
-    def __init__(self,name,description,entries,id=None,references=None):
+    def __init__(self,name,description,entries,id=None,references=None,**kwargs):
         self.id = id
         self.description = description
         self.name = name
         self.references = references
         self._sites = entries
         self.url = "template/policy/definition/vpnmembershipgroup"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
 
@@ -60,7 +60,7 @@ class VpnMembership(BaseObject):
         }
 
     @classmethod
-    def from_json(cls,json_info,lists):
+    def from_json(cls,json_info,lists,**kwargs):
         """
         Generate object from JSON.
         Actually SiteList is not a list...
@@ -94,5 +94,5 @@ class VpnMembership(BaseObject):
         references = json_info.get("references")
         sites = json_info["sites"]
 
-        return cls(name,description,sites,id,references)
+        return cls(name,description,sites,id,references,**kwargs)
 

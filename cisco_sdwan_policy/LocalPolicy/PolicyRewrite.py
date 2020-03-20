@@ -5,7 +5,7 @@ from cisco_sdwan_policy.BaseObject import BaseObject
 
 class QosMap(BaseObject):
 
-    def __init__(self,name,description,rewrite_rules=[],id=None,references=None):
+    def __init__(self,name,description,rewrite_rules=[],id=None,references=None,**kwargs):
         self.id = id
         self.name = name
         self.type = "rewriteRule"
@@ -14,7 +14,7 @@ class QosMap(BaseObject):
         # config["defaultAction"]["type"]
         self._rewrite_rules = rewrite_rules
         self.url = "template/policy/definition/rewriterule"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
 
@@ -54,7 +54,7 @@ class QosMap(BaseObject):
 
 
     @classmethod
-    def from_json(cls,config,lists):
+    def from_json(cls,config,lists,**kwargs):
         """
         Generate object from JSON.
         :return:
@@ -67,6 +67,6 @@ class QosMap(BaseObject):
             if rule["class"]!= "":
                 rule["class"] = cls.get_list_obj(rule["class"],lists)
         rewrite_rules = config["definition"]["rules"]
-        return cls(name,description,rewrite_rules,id,references)
+        return cls(name,description,rewrite_rules,id,references,**kwargs)
 
         pass

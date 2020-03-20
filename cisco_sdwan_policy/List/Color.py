@@ -5,7 +5,7 @@ from cisco_sdwan_policy.BaseObject import BaseObject
 
 class Color(BaseObject):
 
-    def __init__(self,name,color_list,id=None,reference=None):
+    def __init__(self,name,color_list,id=None,reference=None,**kwargs):
         self.type = "colorList"
         self.id = id
         self.name = name
@@ -13,7 +13,7 @@ class Color(BaseObject):
         self._entries = color_list
 
         self.url = "template/policy/list/color"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
 
@@ -25,13 +25,13 @@ class Color(BaseObject):
         self._entries = entries
 
     @classmethod
-    def from_json(cls,jsonfile):
+    def from_json(cls,jsonfile,**kwargs):
         id = jsonfile["listId"]
         name = jsonfile["name"]
         references = jsonfile.get("references")
         entries = [i["color"] for i in jsonfile["entries"]]
 
-        return cls(name,entries,id,references)
+        return cls(name,entries,id,references,**kwargs)
 
     def to_json(self):
         return {

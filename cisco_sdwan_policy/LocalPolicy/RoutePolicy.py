@@ -4,7 +4,7 @@ from cisco_sdwan_policy.Helper.Sequence import Sequence
 
 class RoutePolicy(BaseObject):
 
-    def __init__(self,name,description,default_action,senquences,id=None,references=None):
+    def __init__(self,name,description,default_action,senquences,id=None,references=None,**kwargs):
         self.id = id
         self.name = name
         self.description = description
@@ -14,7 +14,7 @@ class RoutePolicy(BaseObject):
         self.type = "vedgeRoute"
         self._sequence = senquences
         self.url = "template/policy/definition/vedgeroute"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
 
@@ -69,7 +69,7 @@ class RoutePolicy(BaseObject):
         # }
 
     @classmethod
-    def from_json(cls,config,lists):
+    def from_json(cls,config,lists,**kwargs):
         """
         Generate object from JSON.
         :return:
@@ -86,6 +86,6 @@ class RoutePolicy(BaseObject):
         references = config.get("references")
         defaultAction = config["defaultAction"]["type"]
         sequence = config["sequences"]
-        return cls(name,description,defaultAction,sequence,id,references)
+        return cls(name,description,defaultAction,sequence,id,references,**kwargs)
 
         pass

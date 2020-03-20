@@ -5,7 +5,7 @@ from cisco_sdwan_policy.BaseObject import BaseObject
 
 class Policer(BaseObject):
 
-    def __init__(self,name,rate,exceed,burst,id=None,reference=None):
+    def __init__(self,name,rate,exceed,burst,id=None,reference=None,**kwargs):
         self.type = "policerList"
         self.id = id
         self.name = name
@@ -14,13 +14,13 @@ class Policer(BaseObject):
         self.exceed = exceed
         self.rate = rate
         self.url = "template/policy/list/policer"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
 
 
     @classmethod
-    def from_json(cls,config):
+    def from_json(cls,config,**kwargs):
         id = config["listId"]
         name = config["name"]
         references = config.get("references")
@@ -28,7 +28,7 @@ class Policer(BaseObject):
         exceed = config["entries"][0]["exceed"]
         rate = config["entries"][0]["rate"]
 
-        return cls(name,rate,exceed,burst,id,references)
+        return cls(name,rate,exceed,burst,id,references,**kwargs)
 
     def to_json(self):
         return {

@@ -6,7 +6,7 @@ from cisco_sdwan_policy.Helper.Sequence import Sequence
 
 class HubAndSpoke(BaseObject):
 
-    def __init__(self,name,description,vpn,topos,id=None,references=None):
+    def __init__(self,name,description,vpn,topos,id=None,references=None,**kwargs):
         self.id = id
         self.name = name
         self.type = "hubAndSpoke"
@@ -16,7 +16,7 @@ class HubAndSpoke(BaseObject):
         self._topos =topos
         # config["defaultAction"]["type"]
         self.url = "template/policy/definition/hubandspoke"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
     @staticmethod
@@ -99,7 +99,7 @@ class HubAndSpoke(BaseObject):
             }
         }
     @classmethod
-    def from_json(cls,config,lists):
+    def from_json(cls,config,lists,**kwargs):
         """
         Generate object from JSON.
         :return:
@@ -126,4 +126,4 @@ class HubAndSpoke(BaseObject):
             if topo.get("tlocList"):
                 topo["tlocList"]=cls.get_list_obj(topo["tlocList"],lists)
             topos.append(topo)
-        return cls(name,description,vpn,topos,id,references)
+        return cls(name,description,vpn,topos,id,references,**kwargs)

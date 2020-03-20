@@ -5,7 +5,7 @@ from cisco_sdwan_policy.BaseObject import BaseObject
 
 class QosMap(BaseObject):
 
-    def __init__(self,name,description,qos_queues=[],id=None,references=None):
+    def __init__(self,name,description,qos_queues=[],id=None,references=None,**kwargs):
         self.id = id
         self.name = name
         self.type = "qosMap"
@@ -14,7 +14,7 @@ class QosMap(BaseObject):
         # config["defaultAction"]["type"]
         self._qos_queues = qos_queues
         self.url = "template/policy/definition/qosmap"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
 
@@ -54,7 +54,7 @@ class QosMap(BaseObject):
 
 
     @classmethod
-    def from_json(cls,config,lists):
+    def from_json(cls,config,lists,**kwargs):
         """
         Generate object from JSON.
         :return:
@@ -67,6 +67,6 @@ class QosMap(BaseObject):
             if qos["classMapRef"]!= "":
                 qos["classMapRef"] = cls.get_list_obj(qos["classMapRef"],lists)
         qos_queues = config["definition"]["qosSchedulers"]
-        return cls(name,description,qos_queues,id,references)
+        return cls(name,description,qos_queues,id,references,**kwargs)
 
         pass

@@ -4,7 +4,7 @@ from cisco_sdwan_policy.Helper.Sequence import Sequence
 
 class MainPolicy(BaseObject):
 
-    def __init__(self,name,description,control_policy_list,data_policy_list,vpn_membership_list,approute_policy_list,id=None,activated=False):
+    def __init__(self,name,description,control_policy_list,data_policy_list,vpn_membership_list,approute_policy_list,id=None,activated=False,**kwargs):
         self.id = id
         self.name = name
         self.description=description
@@ -15,7 +15,7 @@ class MainPolicy(BaseObject):
         self.approute = approute_policy_list
         self.activated = activated
         self.url="template/policy/vsmart"
-        super().__init__()
+        super().__init__(**kwargs)
 
     @staticmethod
     def get_list_obj(obj_id,lists):
@@ -201,7 +201,7 @@ class MainPolicy(BaseObject):
         return resp
 
     @classmethod
-    def from_json(cls,id,json_info,topo_list,traffic_list,lists):
+    def from_json(cls,id,json_info,topo_list,traffic_list,lists,**kwargs):
         """
         Generate object from JSON.
         :return:
@@ -306,4 +306,4 @@ class MainPolicy(BaseObject):
         description=json_info["policyDescription"]
         activated = json_info["isPolicyActivated"]
 
-        return cls(name,description,control,data,vpnMembershipGroup,approute,id,activated)
+        return cls(name,description,control,data,vpnMembershipGroup,approute,id,activated,**kwargs)

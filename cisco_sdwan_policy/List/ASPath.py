@@ -5,14 +5,14 @@ from cisco_sdwan_policy.BaseObject import BaseObject
 
 class ASPath(BaseObject):
 
-    def __init__(self,name,aspath_list,id=None,reference=None):
+    def __init__(self,name,aspath_list,id=None,reference=None,**kwargs):
         self.type = "aspath"
         self.id = id
         self.name = name
         self.references = reference
         self._entries = aspath_list
         self.url= "template/policy/list/aspath"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
 
@@ -24,13 +24,13 @@ class ASPath(BaseObject):
         self._entries = entries
 
     @classmethod
-    def from_json(cls,config):
+    def from_json(cls,config,**kwargs):
         id = config["listId"]
         name = config["name"]
         references = config.get("references")
         entries = [i["asPath"] for i in config["entries"]]
 
-        return cls(name,entries,id,references)
+        return cls(name,entries,id,references,**kwargs)
 
 
     def to_json(self):

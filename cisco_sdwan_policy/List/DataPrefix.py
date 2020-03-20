@@ -5,7 +5,7 @@ from cisco_sdwan_policy.BaseObject import BaseObject
 
 class DataPrefix(BaseObject):
 
-    def __init__(self,name,prefix_list,is_ipv6=False,id=None,reference=None):
+    def __init__(self,name,prefix_list,is_ipv6=False,id=None,reference=None,**kwargs):
         self.type = "dataprefixList"
         self.ipv6=is_ipv6
 
@@ -13,7 +13,7 @@ class DataPrefix(BaseObject):
         self.id = id
         self.name = name
         self.references = reference
-        super().__init__()
+        super().__init__(**kwargs)
         if int(self.rest.version.split(".")[0])<19:
             self.ipv6=False
         if self.ipv6:
@@ -32,7 +32,7 @@ class DataPrefix(BaseObject):
         self._entries = entries
 
     @classmethod
-    def from_json(cls,config):
+    def from_json(cls,config,**kwargs):
 
         if config["type"] == "dataIpv6Prefix":
             ipv6=True
@@ -46,7 +46,7 @@ class DataPrefix(BaseObject):
         name = config["name"]
         references = config.get("references")
 
-        return cls(name,entries,ipv6,id,references)
+        return cls(name,entries,ipv6,id,references,**kwargs)
 
     def to_json(self):
         return {

@@ -4,7 +4,7 @@ from cisco_sdwan_policy.Helper.Sequence import Sequence
 
 class DataPolicy(BaseObject):
 
-    def __init__(self,name,description,sequences,default_action=None,id=None,references=None):
+    def __init__(self,name,description,sequences,default_action=None,id=None,references=None,**kwargs):
         self.id = id
         self.description= description
         self.name = name
@@ -18,7 +18,7 @@ class DataPolicy(BaseObject):
         self.default_action = default_action
         self._sequence = sequences
         self.url = "template/policy/definition/data"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
 
@@ -53,7 +53,7 @@ class DataPolicy(BaseObject):
         return resp
 
     @classmethod
-    def from_json(cls,json_info,lists):
+    def from_json(cls,json_info,lists,**kwargs):
         """
         Generate object from JSON.
         :return:
@@ -78,4 +78,4 @@ class DataPolicy(BaseObject):
         sequence = json_info["sequences"]
 
 
-        return cls(name,description,sequence,defaultAction,id,references)
+        return cls(name,description,sequence,defaultAction,id,references,**kwargs)

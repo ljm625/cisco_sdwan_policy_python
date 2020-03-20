@@ -5,7 +5,7 @@ from cisco_sdwan_policy.BaseObject import BaseObject
 
 class Mirror(BaseObject):
 
-    def __init__(self,name,source,dest,id=None,reference=None):
+    def __init__(self,name,source,dest,id=None,reference=None,**kwargs):
         self.type = "mirror"
         self.id = id
         self.name = name
@@ -13,7 +13,7 @@ class Mirror(BaseObject):
         self.source = source
         self.dest = dest
         self.url= "template/policy/list/mirror"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
 
@@ -25,14 +25,14 @@ class Mirror(BaseObject):
         self._entries = entries
 
     @classmethod
-    def from_json(cls,config):
+    def from_json(cls,config,**kwargs):
         id = config["listId"]
         name = config["name"]
         references = config.get("references")
         source = config["entries"][0]["source"]
         dest = config["entries"][0]["remoteDest"]
 
-        return cls(name,source,dest,id,references)
+        return cls(name,source,dest,id,references,**kwargs)
 
 
     def to_json(self):

@@ -5,7 +5,7 @@ from cisco_sdwan_policy.BaseObject import BaseObject
 
 class ClassMap(BaseObject):
 
-    def __init__(self,name,queue,id=None,reference=None):
+    def __init__(self,name,queue,id=None,reference=None,**kwargs):
         self.type = "class"
         self.id = id
         self.name = name
@@ -13,7 +13,7 @@ class ClassMap(BaseObject):
         assert queue>=0 and queue<=7 and type(queue)==int
         self.queue = queue
         self.url= "template/policy/list/class"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
 
@@ -25,13 +25,13 @@ class ClassMap(BaseObject):
         self._entries = entries
 
     @classmethod
-    def from_json(cls,config):
+    def from_json(cls,config,**kwargs):
         id = config["listId"]
         name = config["name"]
         references = config.get("references")
         queue = int(config["entries"][0]["queue"])
 
-        return cls(name,queue,id,references)
+        return cls(name,queue,id,references,**kwargs)
 
 
     def to_json(self):

@@ -6,7 +6,7 @@ from cisco_sdwan_policy.Helper.Sequence import Sequence
 
 class Mesh(BaseObject):
 
-    def __init__(self,name,description,vpn,topos,id=None,references=None):
+    def __init__(self,name,description,vpn,topos,id=None,references=None,**kwargs):
         self.id = id
         self.name = name
         self.type = "mesh"
@@ -16,7 +16,7 @@ class Mesh(BaseObject):
         self._topos =topos
         # config["defaultAction"]["type"]
         self.url = "template/policy/definition/mesh"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
     @staticmethod
@@ -52,7 +52,7 @@ class Mesh(BaseObject):
             }
 
     @classmethod
-    def from_json(cls,config,lists):
+    def from_json(cls,config,lists,**kwargs):
         """
         Generate object from JSON.
         :return:
@@ -70,7 +70,7 @@ class Mesh(BaseObject):
                 "sites":[cls.get_list_obj(i,lists) for i in topo["siteLists"]]
             }
             topos.append(tmp)
-        return cls(name,description,vpn,topos,id,references)
+        return cls(name,description,vpn,topos,id,references,**kwargs)
 
     def add_topology(self,name,site_list):
         assert type(site_list)==list

@@ -1,14 +1,19 @@
 import json
+from pprint import pprint
 
 from cisco_sdwan_policy.ViptelaRest import ViptelaRest
 
 
 class BaseObject(object):
 
-    def __init__(self):
+    def __init__(self,**kwargs):
         # Initialized API Endpoints.
         self.modified=False
         self.rest = ViptelaRest.init()
+        if kwargs.get("debug"):
+            self.debug=kwargs["debug"]
+        else:
+            self.debug=False
 
     def to_json(self):
         "Used for override"
@@ -27,6 +32,12 @@ class BaseObject(object):
             self.id = id
 
     def create(self,path,data):
+        if self.debug:
+            print("Creating Object:")
+            print("Calling: {}".format(path))
+            print("Body:")
+            pprint(data)
+
         if self.__getattribute__("id"):
             return False
         result = self.rest.post_request(path,data)
@@ -58,6 +69,12 @@ class BaseObject(object):
 
     def update(self,path,data):
         if self.modified and self.id:
+            if self.debug:
+                print("Updating Object:")
+                print("Calling: {}".format(path))
+                print("Body:")
+                pprint(data)
+
             result = self.rest.put_request("{}/{}".format(path,self.id),data)
             if result.status_code == 200:
                 return True

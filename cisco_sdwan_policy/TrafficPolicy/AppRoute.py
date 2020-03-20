@@ -4,7 +4,7 @@ from cisco_sdwan_policy.Helper.Sequence import Sequence
 
 class AppRoute(BaseObject):
 
-    def __init__(self,name,description,sequences,default_action=None,id=None,references=None):
+    def __init__(self,name,description,sequences,default_action=None,id=None,references=None,**kwargs):
         self.id = id
         self.name = name
         self.references = references
@@ -21,7 +21,7 @@ class AppRoute(BaseObject):
         self._sequence = sequences
 
         self.url = "template/policy/definition/approute"
-        super().__init__()
+        super().__init__(**kwargs)
         self.modified=False
 
 
@@ -62,7 +62,7 @@ class AppRoute(BaseObject):
         return resp
 
     @classmethod
-    def from_json(cls,json_info,lists):
+    def from_json(cls,json_info,lists,**kwargs):
         """
         Generate object from JSON.
         :return:
@@ -87,6 +87,4 @@ class AppRoute(BaseObject):
         else:
             defaultAction = None
         sequences = json_info["sequences"]
-        return cls(name,description,sequences,defaultAction,id,references)
-
-        pass
+        return cls(name,description,sequences,defaultAction,id,references,**kwargs)
