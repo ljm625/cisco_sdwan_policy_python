@@ -24,14 +24,19 @@ class Sequence(BaseObject):
     @classmethod
     def from_json(cls,config,lists,**kwargs):
         for action in config["actions"]:
-            if type(action["parameter"])==list:
-                for para in action["parameter"]:
-                    if para.get("ref"):
-                        resp = cls.get_list_obj(para.get("ref"),lists)
-                        if resp:
-                            action["parameter"][action["parameter"].index(para)]["ref"]=resp
-                        else:
-                            raise Exception("List not found")
+            if action.get("parameter"):
+                if type(action["parameter"])==list:
+                    for para in action["parameter"]:
+                        if para.get("ref"):
+                            resp = cls.get_list_obj(para.get("ref"),lists)
+                            if resp:
+                                action["parameter"][action["parameter"].index(para)]["ref"]=resp
+                            else:
+                                raise Exception("List not found")
+            else:
+                # Might be cflowd
+                pass
+
         new_match=[]
         for match in config["match"]["entries"]:
             matched=False
@@ -76,21 +81,25 @@ class Sequence(BaseObject):
             else:
                 resp["match"]["entries"].append(match)
         for action in self.actions:
-            if type(action["parameter"]) == list:
-                new_para = []
-                for para in action["parameter"]:
-                    if para.get("ref"):
-                        new_para.append({
-                            "field": para["field"],
-                            "ref": para["ref"].get_id()
-                        })
-                    else:
-                        new_para.append(para)
-                resp["actions"].append({
-                    "type":action["type"],
-                    "parameter":new_para
-                })
+            if action.get("parameter"):
+                if type(action["parameter"]) == list:
+                    new_para = []
+                    for para in action["parameter"]:
+                        if para.get("ref"):
+                            new_para.append({
+                                "field": para["field"],
+                                "ref": para["ref"].get_id()
+                            })
+                        else:
+                            new_para.append(para)
+                    resp["actions"].append({
+                        "type":action["type"],
+                        "parameter":new_para
+                    })
+                else:
+                    resp["actions"].append(action)
             else:
+                #cflowd
                 resp["actions"].append(action)
         return resp
 
