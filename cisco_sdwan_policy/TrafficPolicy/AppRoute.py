@@ -41,7 +41,7 @@ class AppRoute(BaseObject):
         """
         resp = {
             "name": self.name,
-            "type": "data",
+            "type": "appRoute",
             "description": self.description,
             "sequences": [i.to_json() for i in self._sequence]
         }

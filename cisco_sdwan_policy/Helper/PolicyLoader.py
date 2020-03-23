@@ -209,25 +209,32 @@ class PolicyLoader(object):
 
         if only_ref:
             for i in list_policies:
-                if i.name not in [j.name for j in self.list_policies]:
+                names = [j.name for j in self.list_policies]
+                if i.name not in names:
                     pass
                 else:
-                    i.name = i.name + "_1"
+                    while i.name in names:
+                        i.name = i.name + "_1"
                 i.id = None
             for i in topo_policies:
-                if i.name not in [j.name for j in self.topo_policies]:
+                names = [j.name for j in self.topo_policies]
+                if i.name not in names:
                     pass
                 else:
-                    i.name = i.name + "_1"
+                    while i.name in names:
+                        i.name = i.name + "_1"
                 i.id = None
             for i in traffic_policies:
-                if i.name not in [j.name for j in self.traffic_policies]:
+                names = [j.name for j in self.traffic_policies]
+                if i.name not in names:
                     pass
                 else:
-                    i.name = i.name + "_1"
+                    while i.name in names:
+                        i.name = i.name + "_1"
                 i.id = None
             for i in main_policies:
-                if i.name in [j.name for j in self.main_policies]:
+                names = [j.name for j in self.traffic_policies]
+                while i.name in names:
                     i.name = i.name + "_1"
                 i.id = None
                 # Save the new policy, all the dependencies will automatically created.
@@ -236,10 +243,12 @@ class PolicyLoader(object):
 
             # Find duplicate from current vManage (Only checks the name.)
             for i in list_policies:
-                if i.name not in [ j.name for j in self.list_policies]:
+                names = [j.name for j in self.list_policies]
+                if i.name not in names:
                     i.id=None
                     i.save()
                     self.list_policies.append(i)
+                    names = [j.name for j in self.list_policies]
                 else:
                     conflict = True
                     for j in self.list_policies:
@@ -248,10 +257,13 @@ class PolicyLoader(object):
                             break
                     if conflict:
                         i.name = i.name+"_1"
+                        if i.name in names:
+                            raise Exception("Error: Seems already restored.")
                         i.id = None
                         i.save()
                         self.list_policies.append(i)
             for i in topo_policies:
+
                 if i.name not in [ j.name for j in self.topo_policies]:
                     i.id=None
                     i.save()
@@ -264,6 +276,8 @@ class PolicyLoader(object):
                             break
                     if conflict:
                         i.name = i.name+"_1"
+                        if i.name in [ j.name for j in self.topo_policies]:
+                            raise Exception("Error: Seems already restored.")
                         i.id = None
                         i.save()
                         self.topo_policies.append(i)
@@ -281,6 +295,8 @@ class PolicyLoader(object):
                             break
                     if conflict:
                         i.name = i.name+"_1"
+                        if i.name in [ j.name for j in self.traffic_policies]:
+                            raise Exception("Error: Seems already restored.")
                         i.id = None
                         i.save()
                         self.traffic_policies.append(i)
@@ -298,6 +314,8 @@ class PolicyLoader(object):
                             break
                     if conflict:
                         i.name = i.name+"_1"
+                        if i.name in [ j.name for j in self.main_policies]:
+                            raise Exception("Error: Seems already restored.")
                         i.id = None
                         i.save()
                         self.main_policies.append(i)
@@ -312,6 +330,9 @@ class PolicyLoader(object):
 
     @classmethod
     def init(cls,server_info=None):
+        if server_info:
+            cls.instance = cls(server_info)
+            return cls.instance
         if cls.instance:
             return cls.instance
         else:

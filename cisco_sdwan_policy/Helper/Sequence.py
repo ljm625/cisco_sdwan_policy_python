@@ -33,6 +33,15 @@ class Sequence(BaseObject):
                                 action["parameter"][action["parameter"].index(para)]["ref"]=resp
                             else:
                                 raise Exception("List not found")
+                elif type(action["parameter"])==dict:
+                    para = action["parameter"]
+                    if para.get("ref"):
+                        resp = cls.get_list_obj(para.get("ref"), lists)
+                        if resp:
+                            action["parameter"]["ref"] = resp
+                        else:
+                            raise Exception("List not found")
+
             else:
                 # Might be cflowd
                 pass
@@ -96,6 +105,10 @@ class Sequence(BaseObject):
                         "type":action["type"],
                         "parameter":new_para
                     })
+                elif type(action["parameter"]) == dict:
+                    if action["parameter"].get("ref"):
+                        action["parameter"]["ref"]=action["parameter"]["ref"].get_id()
+                    resp["actions"].append(action)
                 else:
                     resp["actions"].append(action)
             else:

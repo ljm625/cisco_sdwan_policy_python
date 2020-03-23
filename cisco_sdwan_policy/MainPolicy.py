@@ -109,6 +109,7 @@ class MainPolicy(BaseObject):
             sites=[]
             for in_site in control["in"]:
                 sites.append(in_site.get_id())
+            if sites:
                 tmp["entries"].append({
                         "direction": "in",
                         "siteLists": sites
@@ -116,6 +117,7 @@ class MainPolicy(BaseObject):
             sites=[]
             for out_site in control["out"]:
                 sites.append(out_site.get_id())
+            if sites:
                 tmp["entries"].append({
                         "direction": "out",
                         "siteLists": sites
