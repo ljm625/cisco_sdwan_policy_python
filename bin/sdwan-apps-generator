@@ -28,7 +28,7 @@ def config_reader(config_file):
     :return: config in dict format
     '''
     with open(config_file) as file:
-        config = yaml.load(file.read())
+        config = yaml.load(file.read(),Loader=yaml.FullLoader)
         # print(result)
         return config
 

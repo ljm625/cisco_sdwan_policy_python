@@ -5,6 +5,7 @@ apps:
     - "weixin.qq.com"
 dns_server: 223.5.5.5
 
+policy_create: true
 sdwan_server:
   hostname: 198.18.1.10
   port: 8443

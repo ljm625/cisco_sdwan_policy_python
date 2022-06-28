@@ -25,7 +25,7 @@ def config_reader(config_file):
     :return: config in dict format
     '''
     with open(config_file) as file:
-        config = yaml.load(file.read())
+        config = yaml.load(file.read(),Loader=yaml.FullLoader)
         # print(result)
         return config
 
@@ -95,30 +95,31 @@ if __name__ == '__main__':
             app_ips = app_ips | ip_list
         app_ip_info[appname]=list(app_ips)
     pprint(app_ip_info)
-    print("Start creating Prefix Lists")
-    pl = PolicyLoader.init(config["sdwan_server"])
-    pl.load()
-    existing_list=[i.name for i in pl.list_policies]
-    for appname,ip_list in app_ip_info.items():
-        if  "{}_prefix".format(appname) not in existing_list:
-            Prefix("{}_prefix".format(appname),prefix_list=ip_list).save()
-            print("Created Prefix List: {}_prefix".format(appname))
-        else:
-            for i in pl.list_policies:
-                if i.name=="{}_prefix".format(appname):
-                    i.set_entries(ip_list)
-                    i.save()
-                    print("Updated Prefix List: {}".format(i.name))
-        if "{}_dataprefix".format(appname) not in existing_list:
-            DataPrefix("{}_dataprefix".format(appname),prefix_list=ip_list).save()
-            print("Created Data Prefix List: {}_dataprefix".format(appname))
+    if config["policy_create"]:
+        print("Start creating Prefix Lists")
+        pl = PolicyLoader.init(config["sdwan_server"])
+        pl.load()
+        existing_list=[i.name for i in pl.list_policies]
+        for appname,ip_list in app_ip_info.items():
+            if  "{}_prefix".format(appname) not in existing_list:
+                Prefix("{}_prefix".format(appname),prefix_list=ip_list).save()
+                print("Created Prefix List: {}_prefix".format(appname))
+            else:
+                for i in pl.list_policies:
+                    if i.name=="{}_prefix".format(appname):
+                        i.set_entries(ip_list)
+                        i.save()
+                        print("Updated Prefix List: {}".format(i.name))
+            if "{}_dataprefix".format(appname) not in existing_list:
+                DataPrefix("{}_dataprefix".format(appname),prefix_list=ip_list).save()
+                print("Created Data Prefix List: {}_dataprefix".format(appname))
 
-        else:
-            for i in pl.list_policies:
-                if i.name=="{}_dataprefix".format(appname):
-                    i.set_entries(ip_list)
-                    i.save()
-                    print("Updated Data Prefix List: {}".format(i.name))
+            else:
+                for i in pl.list_policies:
+                    if i.name=="{}_dataprefix".format(appname):
+                        i.set_entries(ip_list)
+                        i.save()
+                        print("Updated Data Prefix List: {}".format(i.name))
 
 
 
